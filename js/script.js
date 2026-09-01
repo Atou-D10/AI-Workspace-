@@ -188,7 +188,7 @@ function renderSummaryPage() {
     const summaryInput = document.getElementById('summary-input');
     const summaryOutput = document.getElementById('summary-output');
 
-    summaryBtn.addEventListener('click', () => {
+    summaryBtn.addEventListener('click', async() => {
         const text = summaryInput.value.trim();
 
         if (text === '') {
@@ -196,10 +196,42 @@ function renderSummaryPage() {
             return;
         }
 
-        // Résumé simulé (on prend juste les premiers mots pour l'exemple)
-        const simulatedSummary = text.split(' ').slice(0, 15).join(' ') + '...';
-        summaryOutput.textContent = "Résumé : " + simulatedSummary;
-        saveToHistory('Résumé de texte', text, simulatedSummary);
+        summaryOutput.textContent = "Résumé en cours...";
+        summaryBtn.disabled = true;
+
+                try {
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + GROQ_API_KEY
+                },
+                body: JSON.stringify({
+                    model: "openai/gpt-oss-120b",
+                    messages: [
+                        { role: "system", content: "Tu es un assistant qui résume des textes en français, de manière claire et concise, en 2 à 3 phrases maximum." },
+                        { role: "user", content: text }
+                    ]
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                summaryOutput.textContent = "Erreur API : " + data.error.message;
+                return;
+            }
+
+            const summary = data.choices[0].message.content;
+            summaryOutput.textContent = "Résumé : " + summary;
+
+            saveToHistory('Résumé de texte', text, summary);
+
+        } catch (error) {
+            summaryOutput.textContent = "Erreur de connexion à l'API : " + error.message;
+        } finally {
+            summaryBtn.disabled = false;
+        }
     });
 }
 
@@ -230,7 +262,7 @@ function renderTranslationPage() {
     const translationLang = document.getElementById('translation-lang');
     const translationOutput = document.getElementById('translation-output');
 
-    translationBtn.addEventListener('click', () => {
+    translationBtn.addEventListener('click', async() => {
         const text = translationInput.value.trim();
         const lang = translationLang.options[translationLang.selectedIndex].text;
 
@@ -239,9 +271,42 @@ function renderTranslationPage() {
             return;
         }
 
-        // Traduction simulée
-        translationOutput.textContent = `Traduction (${lang}) : ${text} [traduit]`;
-        saveToHistory('Traduction', text, `(${lang}) ${text} [traduit]`);
+        translationOutput.textContent = "Traduction en cours...";
+        translationBtn.disabled = true;
+
+                try {
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + GROQ_API_KEY
+                },
+                body: JSON.stringify({
+                    model: "openai/gpt-oss-120b",
+                    messages: [
+                        { role: "system", content: `Tu es un traducteur. Traduis le texte donné par l'utilisateur en ${lang}. Réponds uniquement avec la traduction, sans explication ni commentaire.` },
+                        { role: "user", content: text }
+                    ]
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                translationOutput.textContent = "Erreur API : " + data.error.message;
+                return;
+            }
+
+            const translation = data.choices[0].message.content;
+            translationOutput.textContent = `Traduction (${lang}) : ${translation}`;
+
+            saveToHistory('Traduction', text, translation);
+
+        } catch (error) {
+            translationOutput.textContent = "Erreur de connexion à l'API : " + error.message;
+        } finally {
+            translationBtn.disabled = false;
+        }
     });
 }
 
@@ -262,7 +327,7 @@ function renderChatPage() {
     const chatInput = document.getElementById('chat-input');
     const chatOutput = document.getElementById('chat-output');
 
-    chatBtn.addEventListener('click', () => {
+    chatBtn.addEventListener('click', async() => {
         const message = chatInput.value.trim();
 
         if (message === '') {
@@ -270,9 +335,42 @@ function renderChatPage() {
             return;
         }
 
-        // Réponse simulée
-        chatOutput.textContent = "Réponse IA : Voici une réponse simulée à votre message : \"" + message + "\"";
-        saveToHistory('Chat', message, "Voici une réponse simulée à votre message : \"" + message + "\"");
+        chatOutput.textContent = "Réflexion en cours...";
+        chatBtn.disabled = true;
+
+        try {
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + GROQ_API_KEY
+                },
+                body: JSON.stringify({
+                    model: "openai/gpt-oss-120b",
+                    messages: [
+                        { role: "user", content: message }
+                    ]
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                chatOutput.textContent = "Erreur API : " + data.error.message;
+                return;
+            }
+
+            const reply = data.choices[0].message.content;
+            chatOutput.textContent = "Réponse IA : " + reply;
+
+            saveToHistory('Chat', message, reply);
+
+        } catch (error) {
+            chatOutput.textContent = "Erreur de connexion à l'API : " + error.message;
+        } finally {
+            chatBtn.disabled = false;
+        }
+
     });
 }
 
@@ -299,7 +397,7 @@ function renderPredictionPage() {
     const cityInput = document.getElementById('prediction-city');
     const predictionOutput = document.getElementById('prediction-output');
 
-    predictionBtn.addEventListener('click', () => {
+    predictionBtn.addEventListener('click', async() => {
         const age = ageInput.value.trim();
         const income = incomeInput.value.trim();
         const city = cityInput.value.trim();
@@ -308,10 +406,44 @@ function renderPredictionPage() {
             predictionOutput.textContent = "Veuillez remplir tous les champs.";
             return;
         }
+        predictionOutput.textContent = "Analyse en cours...";
+        predictionBtn.disabled = true;
 
-        // Prédiction fictive
-        predictionOutput.textContent = `Prédiction : Profil "${city}", ${age} ans, revenu ${income} → Catégorie estimée : Client Standard`;
-        saveToHistory('Prédiction', `${city}, ${age} ans, revenu ${income}`, "Catégorie estimée : Client Standard");
+                const profileText = `Âge : ${age}, Revenu : ${income}, Ville : ${city}`;
+
+        try {
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + GROQ_API_KEY
+                },
+                body: JSON.stringify({
+                    model: "openai/gpt-oss-120b",
+                    messages: [
+                        { role: "system", content: "Tu simules un modèle de prédiction marketing fictif. À partir d'un profil (âge, revenu, ville), donne une catégorie de client plausible (ex: Client Standard, Client Premium, Client Économique, Jeune Actif, etc.) et une justification en une phrase. Réponds au format : 'Catégorie : ... — Justification : ...'. Précise bien qu'il s'agit d'une estimation fictive à but pédagogique." },
+                        { role: "user", content: profileText }
+                    ]
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                predictionOutput.textContent = "Erreur API : " + data.error.message;
+                return;
+            }
+
+            const prediction = data.choices[0].message.content;
+            predictionOutput.textContent = "Prédiction : " + prediction;
+
+            saveToHistory('Prédiction', profileText, prediction);
+
+        } catch (error) {
+            predictionOutput.textContent = "Erreur de connexion à l'API : " + error.message;
+        } finally {
+            predictionBtn.disabled = false;
+        }
     });
 }
 
