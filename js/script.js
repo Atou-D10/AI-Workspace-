@@ -21,6 +21,9 @@ function renderPage(page) {
         case 'summary':
             renderSummaryPage();
             break;
+        case 'translation':
+            renderTranslationPage();
+            break;
         default:
             mainContent.innerHTML = `
                 <h1>Tableau de bord</h1>
@@ -57,5 +60,46 @@ function renderSummaryPage() {
         // Résumé simulé (on prend juste les premiers mots pour l'exemple)
         const simulatedSummary = text.split(' ').slice(0, 15).join(' ') + '...';
         summaryOutput.textContent = "Résumé : " + simulatedSummary;
+    });
+}
+
+// ===== PARTIE 4 : Traduction =====
+function renderTranslationPage() {
+    mainContent.innerHTML = `
+        <h1>Traduction</h1>
+        <p>Entrez un texte et choisissez la langue de traduction.</p>
+
+        <textarea id="translation-input" rows="6" placeholder="Entrez votre texte ici..."></textarea>
+        <br>
+
+        <select id="translation-lang">
+            <option value="en">Anglais</option>
+            <option value="es">Espagnol</option>
+            <option value="de">Allemand</option>
+            <option value="ar">Arabe</option>
+        </select>
+        <br>
+
+        <button id="translation-btn">Traduire</button>
+
+        <div id="translation-output"></div>
+    `;
+
+    const translationBtn = document.getElementById('translation-btn');
+    const translationInput = document.getElementById('translation-input');
+    const translationLang = document.getElementById('translation-lang');
+    const translationOutput = document.getElementById('translation-output');
+
+    translationBtn.addEventListener('click', () => {
+        const text = translationInput.value.trim();
+        const lang = translationLang.options[translationLang.selectedIndex].text;
+
+        if (text === '') {
+            translationOutput.textContent = "Veuillez entrer un texte à traduire.";
+            return;
+        }
+
+        // Traduction simulée
+        translationOutput.textContent = `Traduction (${lang}) : ${text} [traduit]`;
     });
 }
