@@ -24,6 +24,9 @@ function renderPage(page) {
         case 'translation':
             renderTranslationPage();
             break;
+        case 'chat':
+            renderChatPage();
+            break;
         default:
             mainContent.innerHTML = `
                 <h1>Tableau de bord</h1>
@@ -101,5 +104,35 @@ function renderTranslationPage() {
 
         // Traduction simulée
         translationOutput.textContent = `Traduction (${lang}) : ${text} [traduit]`;
+    });
+}
+
+// ===== PARTIE 5 : Chat IA =====
+function renderChatPage() {
+    mainContent.innerHTML = `
+        <h1>Chat IA</h1>
+        <p>Posez une question à l'assistant IA.</p>
+
+        <textarea id="chat-input" rows="4" placeholder="Écrivez votre message ici..."></textarea>
+        <br>
+        <button id="chat-btn">Envoyer</button>
+
+        <div id="chat-output"></div>
+    `;
+
+    const chatBtn = document.getElementById('chat-btn');
+    const chatInput = document.getElementById('chat-input');
+    const chatOutput = document.getElementById('chat-output');
+
+    chatBtn.addEventListener('click', () => {
+        const message = chatInput.value.trim();
+
+        if (message === '') {
+            chatOutput.textContent = "Veuillez entrer un message.";
+            return;
+        }
+
+        // Réponse simulée
+        chatOutput.textContent = "Réponse IA : Voici une réponse simulée à votre message : \"" + message + "\"";
     });
 }
