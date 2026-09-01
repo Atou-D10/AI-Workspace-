@@ -133,3 +133,27 @@ button:hover {
     min-height: 50px;
     max-width: 600px;
 }
+
+/* ===== HISTORIQUE ===== */
+.history-item {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 12px;
+    max-width: 600px;
+}
+
+.history-date {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.history-delete-btn {
+    background-color: #ef4444;
+    margin-top: 8px;
+}
+
+.history-delete-btn:hover {
+    background-color: #dc2626;
+}

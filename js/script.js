@@ -30,6 +30,9 @@ function renderPage(page) {
         case 'prediction':
             renderPredictionPage();
             break;
+        case 'history':
+            renderHistoryPage();
+            break;
         default:
             mainContent.innerHTML = `
                 <h1>Tableau de bord</h1>
@@ -66,6 +69,7 @@ function renderSummaryPage() {
         // Résumé simulé (on prend juste les premiers mots pour l'exemple)
         const simulatedSummary = text.split(' ').slice(0, 15).join(' ') + '...';
         summaryOutput.textContent = "Résumé : " + simulatedSummary;
+        saveToHistory('Résumé de texte', text, simulatedSummary);
     });
 }
 
@@ -107,6 +111,7 @@ function renderTranslationPage() {
 
         // Traduction simulée
         translationOutput.textContent = `Traduction (${lang}) : ${text} [traduit]`;
+        saveToHistory('Traduction', text, `(${lang}) ${text} [traduit]`);
     });
 }
 
@@ -137,6 +142,7 @@ function renderChatPage() {
 
         // Réponse simulée
         chatOutput.textContent = "Réponse IA : Voici une réponse simulée à votre message : \"" + message + "\"";
+        saveToHistory('Chat', message, "Voici une réponse simulée à votre message : \"" + message + "\"");
     });
 }
 
@@ -175,5 +181,99 @@ function renderPredictionPage() {
 
         // Prédiction fictive
         predictionOutput.textContent = `Prédiction : Profil "${city}", ${age} ans, revenu ${income} → Catégorie estimée : Client Standard`;
+        saveToHistory('Prédiction', `${city}, ${age} ans, revenu ${income}`, "Catégorie estimée : Client Standard");
+    });
+}
+
+// ===== GESTION DE L'HISTORIQUE (localStorage) =====
+function saveToHistory(service, input, output) {
+    const history = JSON.parse(localStorage.getItem('history')) || [];
+    history.push({
+        id: Date.now(),
+        service: service,
+        input: input,
+        output: output,
+        date: new Date().toLocaleString()
+    });
+    localStorage.setItem('history', JSON.stringify(history));
+}
+
+function getHistory() {
+    return JSON.parse(localStorage.getItem('history')) || [];
+}
+
+function deleteHistoryItem(id) {
+    let history = getHistory();
+    history = history.filter(item => item.id !== id);
+    localStorage.setItem('history', JSON.stringify(history));
+}
+
+function clearHistory() {
+    localStorage.removeItem('history');
+}
+
+// ===== PARTIE 7 : Historique =====
+function renderHistoryPage() {
+    mainContent.innerHTML = `
+        <h1>Historique</h1>
+        <p>Consultez, recherchez ou supprimez vos requêtes précédentes.</p>
+
+        <input type="text" id="history-search" placeholder="Rechercher dans l'historique...">
+        <br>
+        <button id="history-clear-btn">Vider l'historique</button>
+
+        <div id="history-list"></div>
+    `;
+
+    const searchInput = document.getElementById('history-search');
+    const clearBtn = document.getElementById('history-clear-btn');
+
+    displayHistory(getHistory());
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        const filtered = getHistory().filter(item =>
+            item.service.toLowerCase().includes(query) ||
+            item.input.toLowerCase().includes(query) ||
+            item.output.toLowerCase().includes(query)
+        );
+        displayHistory(filtered);
+    });
+
+    clearBtn.addEventListener('click', () => {
+        const confirmClear = confirm("Êtes-vous sûr de vouloir vider tout l'historique ?");
+        if (confirmClear) {
+            clearHistory();
+            displayHistory([]);
+        }
+    });
+}
+
+function displayHistory(items) {
+    const historyList = document.getElementById('history-list');
+
+    if (items.length === 0) {
+        historyList.innerHTML = '<p>Aucun élément dans l\'historique.</p>';
+        return;
+    }
+
+    historyList.innerHTML = items
+        .slice()
+        .reverse()
+        .map(item => `
+            <div class="history-item" data-id="${item.id}">
+                <strong>${item.service}</strong> — <span class="history-date">${item.date}</span>
+                <p><em>Entrée :</em> ${item.input}</p>
+                <p><em>Résultat :</em> ${item.output}</p>
+                <button class="history-delete-btn" data-id="${item.id}">Supprimer</button>
+            </div>
+        `).join('');
+
+    document.querySelectorAll('.history-delete-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = Number(btn.getAttribute('data-id'));
+            deleteHistoryItem(id);
+            displayHistory(getHistory());
+        });
     });
 }
