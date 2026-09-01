@@ -38,10 +38,141 @@
         <main class="main-content" id="main-content">
             <h1>Tableau de bord</h1>
             <p>Bienvenue sur votre espace de travail intelligent.</p>
-            <!-- Le contenu dynamique sera injecté ici via JS dans les prochaines parties -->
+            <!-- CARTES STATISTIQUES -->
+            <div class="grid stats-grid">
+                <div class="stat-card">
+                    <p class="stat-label">Nombre de jeux de données</p>
+                    <p class="stat-value">24</p>
+                    <p class="stat-change">+3 ce mois-ci</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Nombre de requêtes</p>
+                    <p class="stat-value">1,256</p>
+                    <p class="stat-change">+18% ce mois-ci</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Nombre de modèles disponibles</p>
+                    <p class="stat-value">12</p>
+                    <p class="stat-change">+2 ce mois-ci</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Utilisateurs actifs</p>
+                    <p class="stat-value">8</p>
+                    <p class="stat-change">+2 ce mois-ci</p>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">Tâches exécutées</p>
+                    <p class="stat-value">342</p>
+                    <p class="stat-change">+22% ce mois-ci</p>
+                </div>
+            </div>
+
+            <!-- GRAPHIQUES -->
+            <div class="grid charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <p class="chart-title">Requêtes par jour</p>
+                        <select id="chart-period" class="chart-filter">
+                            <option value="7">7 derniers jours</option>
+                            <option value="30">30 derniers jours</option>
+                            <option value="90">90 derniers jours</option>
+                        </select>
+                    </div>
+                    <img src="images/chart-line.png" alt="Graphique requêtes par jour" class="chart-img">
+                </div>
+                <div class="chart-card">
+                    <p class="chart-title">Répartition des requêtes par service</p>
+                    <img src="images/chart-donut.png" alt="Graphique répartition des requêtes" class="chart-img">
+                </div>
+            </div>
+
+            <!-- ACTIVITÉ RÉCENTE & MODÈLES POPULAIRES -->
+            <div class="grid tables-grid">
+                <div class="table-card">
+                    <p class="table-title">Activité récente</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Activité</th>
+                                <th>Service</th>
+                                <th>Utilisateur</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Résumé du document_projet.pdf</td>
+                                <td>Résumé de texte</td>
+                                <td>Admin User</td>
+                                <td>21/05/2024 14:32</td>
+                            </tr>
+                            <tr>
+                                <td>Classification de sentiments</td>
+                                <td>Classification</td>
+                                <td>Admin User</td>
+                                <td>21/05/2024 14:21</td>
+                            </tr>
+                            <tr>
+                                <td>Traduction FR → EN</td>
+                                <td>Traduction</td>
+                                <td>Admin User</td>
+                                <td>21/05/2024 14:15</td>
+                            </tr>
+                            <tr>
+                                <td>Discussion sur l'IA générative</td>
+                                <td>Chat</td>
+                                <td>Admin User</td>
+                                <td>21/05/2024 14:05</td>
+                            </tr>
+                            <tr>
+                                <td>Génération d'idées de projet</td>
+                                <td>Idées</td>
+                                <td>Admin User</td>
+                                <td>21/05/2024 13:50</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="table-link">Voir tout l'historique</a>
+                </div>
+
+                <div class="table-card">
+                    <p class="table-title">Modèles populaires</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Modèle</th>
+                                <th>Utilisations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>mistral-7b-instruct</td>
+                                <td>532</td>
+                            </tr>
+                            <tr>
+                                <td>gpt-4-turbo</td>
+                                <td>389</td>
+                            </tr>
+                            <tr>
+                                <td>llama-3-8b</td>
+                                <td>256</td>
+                            </tr>
+                            <tr>
+                                <td>bert-base-uncased</td>
+                                <td>179</td>
+                            </tr>
+                            <tr>
+                                <td>google-translate-v1</td>
+                                <td>142</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="table-link">Voir tous les modèles</a>
+                </div>
+            </div>
         </main>
 
-    </div>
+            </div>
 
     <script src="js/script.js"></script>
 </body>
