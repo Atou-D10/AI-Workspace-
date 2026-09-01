@@ -27,6 +27,9 @@ function renderPage(page) {
         case 'chat':
             renderChatPage();
             break;
+        case 'prediction':
+            renderPredictionPage();
+            break;
         default:
             mainContent.innerHTML = `
                 <h1>Tableau de bord</h1>
@@ -134,5 +137,43 @@ function renderChatPage() {
 
         // Réponse simulée
         chatOutput.textContent = "Réponse IA : Voici une réponse simulée à votre message : \"" + message + "\"";
+    });
+}
+
+// ===== PARTIE 6 : Prédiction =====
+function renderPredictionPage() {
+    mainContent.innerHTML = `
+        <h1>Prédiction</h1>
+        <p>Entrez vos informations pour obtenir une prédiction.</p>
+
+        <input type="number" id="prediction-age" placeholder="Âge">
+        <br>
+        <input type="number" id="prediction-income" placeholder="Revenu">
+        <br>
+        <input type="text" id="prediction-city" placeholder="Ville">
+        <br>
+        <button id="prediction-btn">Prédire</button>
+
+        <div id="prediction-output"></div>
+    `;
+
+    const predictionBtn = document.getElementById('prediction-btn');
+    const ageInput = document.getElementById('prediction-age');
+    const incomeInput = document.getElementById('prediction-income');
+    const cityInput = document.getElementById('prediction-city');
+    const predictionOutput = document.getElementById('prediction-output');
+
+    predictionBtn.addEventListener('click', () => {
+        const age = ageInput.value.trim();
+        const income = incomeInput.value.trim();
+        const city = cityInput.value.trim();
+
+        if (age === '' || income === '' || city === '') {
+            predictionOutput.textContent = "Veuillez remplir tous les champs.";
+            return;
+        }
+
+        // Prédiction fictive
+        predictionOutput.textContent = `Prédiction : Profil "${city}", ${age} ans, revenu ${income} → Catégorie estimée : Client Standard`;
     });
 }
