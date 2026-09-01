@@ -1,0 +1,99 @@
+/* ===== RESET CSS ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f4f6f9;
+    color: #1f2937;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 30px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.header-user {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ===== LAYOUT PRINCIPAL ===== */
+.container {
+    display: flex;
+    min-height: calc(100vh - 60px);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+    width: 220px;
+    background-color: #ffffff;
+    border-right: 1px solid #e5e7eb;
+    padding: 20px 0;
+}
+
+.sidebar nav ul li {
+    padding: 12px 25px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar nav ul li:hover {
+    background-color: #f0f4ff;
+}
+
+.sidebar nav ul li.active {
+    background-color: #e8edff;
+    border-left: 3px solid #4f6df5;
+    font-weight: 600;
+    color: #4f6df5;
+}
+
+/* ===== ZONE PRINCIPALE ===== */
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.main-content h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.main-content p {
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+/* ===== GRID (pour les futures cartes/stats) ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
