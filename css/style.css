@@ -26,13 +26,22 @@ ul {
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff;
-    padding: 15px 30px;
+    padding: 0 30px;
+    height: 65px;
     border-bottom: 1px solid #e5e7eb;
 }
 
 .header-title {
     font-size: 20px;
     font-weight: bold;
+    margin-left: 190px;
+    border-left: 1px solid #e5e7eb;
+    padding-left: 15px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+
 }
 
 .header-user {
@@ -75,6 +84,15 @@ ul {
     color: #4f6df5;
 }
 
+.sidebar-title {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0 25px 20px 15px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 /* ===== ZONE PRINCIPALE ===== */
 .main-content {
     flex: 1;
@@ -101,7 +119,7 @@ ul {
 /* ===== RÉSUMÉ / FORMULAIRES GÉNÉRIQUES ===== */
 textarea, input[type="text"], input[type="number"], select {
     width: 100%;
-    max-width: 600px;
+    max-width: 100%;
     padding: 10px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
@@ -131,7 +149,7 @@ button:hover {
     border-radius: 6px;
     padding: 15px;
     min-height: 50px;
-    max-width: 600px;
+    max-width: 100%;
 }
 
 /* ===== HISTORIQUE ===== */
@@ -141,7 +159,7 @@ button:hover {
     border-radius: 6px;
     padding: 15px;
     margin-bottom: 12px;
-    max-width: 600px;
+    max-width: 100%;
 }
 
 .history-date {
